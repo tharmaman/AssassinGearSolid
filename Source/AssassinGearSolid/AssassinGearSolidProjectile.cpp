@@ -2,6 +2,7 @@
 
 #include "AssassinGearSolidProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Classes/Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 
 AAssassinGearSolidProjectile::AAssassinGearSolidProjectile() 
@@ -40,4 +41,6 @@ void AAssassinGearSolidProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* O
 
 		Destroy();
 	}
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
 }

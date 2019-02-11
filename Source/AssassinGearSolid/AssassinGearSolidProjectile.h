@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "AssassinGearSolidProjectile.generated.h"
 
+class UParticleSystem;
+
 UCLASS(config=Game)
 class AAssassinGearSolidProjectile : public AActor
 {
@@ -18,6 +20,9 @@ class AAssassinGearSolidProjectile : public AActor
 	/** Projectile movement component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	class UProjectileMovementComponent* ProjectileMovement;
+
+	UPROPERTY(EditDefaultsOnly, Category = "FX")
+	class UParticleSystem* ExplosionEffect;
 
 public:
 	AAssassinGearSolidProjectile();
