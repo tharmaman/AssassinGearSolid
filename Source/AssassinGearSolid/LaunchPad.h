@@ -10,6 +10,7 @@
 class UBoxComponent;
 class UStaticMeshComponent;
 class UArrowComponent;
+class UParticleSystem;
 
 UCLASS()
 class ASSASSINGEARSOLID_API ALaunchPad : public AActor
@@ -29,7 +30,7 @@ protected:
 
     // marked with UFUNCTION to bind to overlap event
     UFUNCTION()
-    void HandleOverlapLaunchpad(
+    void OverlapLaunchPad(
             UPrimitiveComponent* OverlappedComponent,
             AActor* OtherActor,
             UPrimitiveComponent* OtherComp,
@@ -40,13 +41,22 @@ protected:
 
     /**
      * Total impulse added to the character on overlap
+     * Marked "EditInstanceOnly" to allow in-level editing of this property per instance
      */
     UPROPERTY(EditInstanceOnly, Category = "LaunchPad")
     float LaunchStrength;
 
-
+    /**
+     * Angle added on top of actor rotation to launch the character
+     * Marked "EditInstanceOnly" to allow in-level editing of this property per instance
+     */
     UPROPERTY(EditInstanceOnly, Category = "LaunchPad")
     float LaunchPitchAngle;
 
+    /**
+     * Adding effect to play on launch pad activation
+     */
+    UPROPERTY(EditDefaultsOnly, Category = "LaunchPad")
+    UParticleSystem* ActivateLaunchPadEffect;
 
 };
