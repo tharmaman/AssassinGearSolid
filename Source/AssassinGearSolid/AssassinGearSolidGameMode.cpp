@@ -17,7 +17,7 @@ AAssassinGearSolidGameMode::AAssassinGearSolidGameMode()
 	HUDClass = AAssassinGearSolidHUD::StaticClass();
 }
 
-void AAssassinGearSolidGameMode::CompleteMission(APawn* InstigatorPawn)
+void AAssassinGearSolidGameMode::CompleteMission(APawn* InstigatorPawn, bool bMissionSuccess)
 {
 	if (InstigatorPawn)
 	{
@@ -45,7 +45,8 @@ void AAssassinGearSolidGameMode::CompleteMission(APawn* InstigatorPawn)
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("SpectatingViewpointClass is nullptr. Please update GameMode class with valid subclass. Cannot change spectating view target!"));
+		return;
 	}
 
-	OnMissionCompleted(InstigatorPawn);
+	OnMissionCompleted(InstigatorPawn, bMissionSuccess);
 }

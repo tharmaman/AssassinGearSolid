@@ -4,6 +4,7 @@
 #include "Classes/Perception/PawnSensingComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Public/TimerManager.h"
+#include "AssassinGearSolidGameMode.h"
 
 // Sets default values
 AAIGuard::AAIGuard()
@@ -39,6 +40,13 @@ void AAIGuard::OnPawnSeen(APawn *SeenPawn)
 
 	UE_LOG(LogTemp, Warning, TEXT("PAWN SEEN"));
 	DrawDebugSphere(GetWorld(), SeenPawn -> GetActorLocation(), 32.0f, 12, FColor::Red, false, 10.0f);
+
+	AAssassinGearSolidGameMode* GM = Cast<AAssassinGearSolidGameMode>(GetWorld() -> GetAuthGameMode());
+
+	if (GM)
+	{
+		GM -> CompleteMission(SeenPawn, false);
+	}
 }
 
 void AAIGuard::OnNoiseHeard(APawn* NoiseInstigator, const FVector& Location, float Volume)

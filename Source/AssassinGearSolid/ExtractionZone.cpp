@@ -42,7 +42,7 @@ void AExtractionZone::HandleOverlap(UPrimitiveComponent *OverlappedComponent, AA
 
 		if (GM)
 		{
-			GM -> CompleteMission(MyPawn);
+			GM -> CompleteMission(MyPawn, true);
 		}
 	}
 	else
