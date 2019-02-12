@@ -16,6 +16,8 @@ AAIGuard::AAIGuard()
 
 	PawnSensingComp -> OnSeePawn.AddDynamic(this, &AAIGuard::OnPawnSeen);
 	PawnSensingComp -> OnHearNoise.AddDynamic(this, &AAIGuard::OnNoiseHeard);
+
+	GuardState = EAIState::Idle;
 }
 
 // Called when the game starts or when spawned
@@ -47,10 +49,13 @@ void AAIGuard::OnPawnSeen(APawn *SeenPawn)
 	{
 		GM -> CompleteMission(SeenPawn, false);
 	}
+	SetGuardState(EAIState::Alerted);
 }
 
 void AAIGuard::OnNoiseHeard(APawn* NoiseInstigator, const FVector& Location, float Volume)
 {
+	if (GuardState == EAIState::Alerted) return;
+
 	if (NoiseInstigator == nullptr) return;
 
 	UE_LOG(LogTemp, Warning, TEXT("PAWN HEARD"));
@@ -68,9 +73,27 @@ void AAIGuard::OnNoiseHeard(APawn* NoiseInstigator, const FVector& Location, flo
 	GetWorldTimerManager().ClearTimer(TimerHandle_ResetOrientation);
 
 	GetWorldTimerManager().SetTimer(TimerHandle_ResetOrientation, this, &AAIGuard::ResetOrientation, 3.0f);
+
+	SetGuardState(EAIState::Suspicious);
 }
 
 void AAIGuard::ResetOrientation()
 {
+	if (GuardState == EAIState::Alerted) return;
+
 	SetActorRotation(OriginalRotation);
+
+	SetGuardState(EAIState::Idle);
+}
+
+void AAIGuard::SetGuardState(EAIState NewState)
+{
+	if (GuardState == NewState)
+	{
+		return;
+	}
+
+	GuardState = NewState;
+
+	OnStateChanged(GuardState);
 }
