@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
 #include "Components/PawnNoiseEmitterComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -327,4 +328,14 @@ void AAssassinGearSolidCharacter::Tick(float DeltaTime)
 
 		FirstPersonCameraComponent -> SetRelativeRotation(NewRot);
 	}
+}
+
+void AAssassinGearSolidCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AAssassinGearSolidCharacter, bIsCarryingObjective);
+
+	// use below for bandwidth optimization as it only changes HUD
+	//DOREPLIFETIME_CONDITION(AFPSCharacter, bIsCarryingObjective, COND_OwnerOnly);
 }
