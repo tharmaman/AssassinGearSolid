@@ -90,10 +90,13 @@ protected:
 	/** Fires a projectile. */
 	void OnFire();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerFire();
+
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();
 
-	/** Handles moving forward/backward */
+	/** HFUNCTION(andles moving forward/backward */
 	void MoveForward(float Val);
 
 	/** Handles stafing movement, left and right */

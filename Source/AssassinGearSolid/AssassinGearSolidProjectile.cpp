@@ -30,6 +30,9 @@ AAssassinGearSolidProjectile::AAssassinGearSolidProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
 }
 
 void AAssassinGearSolidProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -39,9 +42,12 @@ void AAssassinGearSolidProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* O
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 	}
 
-	MakeNoise(1.0f, Instigator);
+	if (Role == ROLE_Authority)
+	{
+		MakeNoise(1.0f, Instigator);
 
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
 
-	Destroy();
+		Destroy();
+	}
 }
