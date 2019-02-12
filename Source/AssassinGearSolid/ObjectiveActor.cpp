@@ -17,6 +17,8 @@ AObjectiveActor::AObjectiveActor()
     SphereComp -> SetCollisionResponseToAllChannels(ECR_Ignore);
     SphereComp -> SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
     SphereComp -> SetupAttachment(MeshComp);
+
+	SetReplicates(true);
 }
 
 // Called when the game starts or when spawned
@@ -43,13 +45,16 @@ void AObjectiveActor::NotifyActorBeginOverlap(AActor *OtherActor)
 
 	PlayEffects();
 
-	// check if overlapped with character
-	AAssassinGearSolidCharacter* MyCharacter = Cast<AAssassinGearSolidCharacter>(OtherActor);
-	if (MyCharacter)
+	if (Role == ROLE_Authority)
 	{
-		MyCharacter -> bIsCarryingObjective = true;
+		// check if overlapped with character
+		AAssassinGearSolidCharacter* MyCharacter = Cast<AAssassinGearSolidCharacter>(OtherActor);
+		if (MyCharacter)
+		{
+			MyCharacter -> bIsCarryingObjective = true;
 
-		Destroy();
+			Destroy();
+		}
 	}
 }
 
