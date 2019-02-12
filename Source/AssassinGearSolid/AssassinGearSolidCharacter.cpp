@@ -312,3 +312,19 @@ bool AAssassinGearSolidCharacter::ServerFire_Validate()
 {
 	return true;
 }
+
+void AAssassinGearSolidCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (!IsLocallyControlled())
+	{
+		FRotator NewRot = FirstPersonCameraComponent -> RelativeRotation;
+
+		// need to uncompress RemoteView Pitch
+		// 360 degrees and 255 comes from uint8 available amount
+		NewRot.Pitch = RemoteViewPitch * 360.0f / 255.0f;
+
+		FirstPersonCameraComponent -> SetRelativeRotation(NewRot);
+	}
+}
