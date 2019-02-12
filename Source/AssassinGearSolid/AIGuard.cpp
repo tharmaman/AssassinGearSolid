@@ -5,6 +5,7 @@
 #include "DrawDebugHelpers.h"
 #include "Public/TimerManager.h"
 #include "AssassinGearSolidGameMode.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AAIGuard::AAIGuard()
@@ -94,6 +95,17 @@ void AAIGuard::SetGuardState(EAIState NewState)
 	}
 
 	GuardState = NewState;
+	OnRep_GuardState();
+}
 
+void AAIGuard::OnRep_GuardState()
+{
 	OnStateChanged(GuardState);
+}
+
+void AAIGuard::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AAIGuard, GuardState);
 }
